@@ -17,9 +17,10 @@ convertBtn.addEventListener('click', () => {
     let text = textInput.value.trim();
     if (text !== '') {
         speechSynthesisUtterance.text = text;
-        speechSynthesisUtterance.pitch = 1.0;
-        speechSynthesisUtterance.rate = 1.0;
-        speechSynthesisUtterance.volume = 1.0;
+        speechSynthesisUtterance.pitch = 1.1;  // Adjust pitch for a more feminine sound
+        speechSynthesisUtterance.rate = 1.0;   // Normal speaking rate
+        speechSynthesisUtterance.volume = 1.0; // Full volume
+
         speechSynthesis.speak(speechSynthesisUtterance);
         convertBtn.disabled = true;
         stopBtn.disabled = false;
