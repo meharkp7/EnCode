@@ -11,10 +11,10 @@ def record_text():
             #use the microphone as source for input 
             with sr.Microphone() as source2:
                 #preparing recongniser to recieve input
-                r.adjust_for_ambient_noise(source2,duration=0.2)
+                r.adjust_for_ambient_noise(source2,duration=0.3)
 
                 #listens for the user's input
-                audio2=r.listen(source2)
+                audio2=r.listen(source2, timeout=5,phrase_time_limit=10)
 
                 #using whisper to recogniise audio 
                 MyText=r.recognize_google(audio2)
