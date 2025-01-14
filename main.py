@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 import spacy
+from flask_cors import CORS
 
 # Initialize the Flask app
 app = Flask(__name__)
+CORS(app)
 
 # Load the language model
 nlp = spacy.load("en_core_web_sm")
