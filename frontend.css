@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap");
+
 * {
     margin: 0;
     padding: 0;
@@ -46,16 +47,18 @@
     margin-bottom: 40px;
 }
 
-#mic-btn {  /* Updated ID here */
-    width: 80px;
+#micButton img {
+    width: 50px;
+    height: 50px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
 }
 
-#mic-btn:hover {  /* Updated ID here */
+#micButton img:hover {
     transform: scale(1.2);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-#mic-btn:active {  /* Updated ID here */
+#micButton img:active {
     transform: scale(0.9);
 }
