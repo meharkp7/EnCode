@@ -1,37 +1,15 @@
 #TRY 1 TO COMPLETE POORA CONVERSATION    
 
 from flask import Flask, render_template, request, jsonify
-import speech_recognition as sr
-import pyttsx3
 import spacy
-import datetime
 
+# Initialize the Flask app
 app = Flask(__name__)
 
-# Initialize speech recognition, TTS, and NLU
-r = sr.Recognizer()
+# Load the language model
 nlp = spacy.load("en_core_web_sm")
-engine = pyttsx3.init()
-@app.route('/')
-def home():
-    return render_template('index.html')
 
-@app.route('/conversation', methods=['POST'])
-def web_conversation():
-    user_input = request.json.get("text", "")
-    if not user_input:
-        return jsonify({"response": "No input received."})
-    
-    entities, verbs = process_nlu(user_input)
-    intent = match_intent(user_input)
-    response = respond(intent)
-    
-    return jsonify({"response": response})
-
-if __name__ == "__main__":
-    app.run(debug=True)
-    
-# Define some simple intents and responses
+# Define intents and responses
 intents = {
     "greeting": ["hello", "hi", "hey", "good morning", "good evening", "hey there"],
     "product_inquiry": ["tell me about your product", "what do you sell", "give me more info about your products"],
@@ -43,35 +21,14 @@ intents = {
 
 responses = {
     "greeting": "Hello! How can I assist you with your purchase today?",
-    "product_inquiry": "We offer a variety of products, including electronics, home appliances, and accessories. Which category interests you?",
+    "product_inquiry": "We offer a variety of products. Which category interests you?",
     "price_inquiry": "Our products range from $10 to $500 depending on the item. What product are you interested in?",
     "thank_you": "You're welcome! I'm here to help.",
-    "goodbye": "Goodbye! Have a great day, and thank you for your interest in our products!",
+    "goodbye": "Goodbye! Have a great day!",
     "default": "I'm sorry, I didn't quite catch that. Could you please repeat?"
 }
 
-# Function to recognize speech and return text
-def record_text():
-    while True:
-        try:
-            with sr.Microphone() as source2:
-                r.adjust_for_ambient_noise(source2, duration=0.3)
-                audio2 = r.listen(source2, timeout=5, phrase_time_limit=10)
-                MyText = r.recognize_google(audio2)
-                return MyText
-        except sr.RequestError as e:
-            print(f"Request error: {e}")
-        except sr.UnknownValueError:
-            print("Unknown error occurred")
-
-# Function to process natural language understanding (NLU) and extract useful information
-def process_nlu(text):
-    doc = nlp(text)
-    entities = [ent.text for ent in doc.ents]
-    verbs = [token.text for token in doc if token.pos_ == "VERB"]
-    return entities, verbs
-
-# Function to match intents based on keywords in the text
+# Function to match intent
 def match_intent(text):
     text = text.lower()
     for intent, keywords in intents.items():
@@ -80,44 +37,19 @@ def match_intent(text):
                 return intent
     return "default"
 
-# Function to generate response based on intent
-def respond(intent):
-    response = responses.get(intent, responses["default"])
-    if callable(response):
-        return response()
-    return response
+# Route for the homepage
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-# Function to speak the response using TTS
-def speak_response(response):
-    engine.say(response)
-    engine.runAndWait()
-
-# Function to handle the entire conversation flow
+# Route to handle conversation
+@app.route('/conversation', methods=['POST'])
 def conversation():
-    print("Agent is ready to speak.")
-    while True:
-        # Step 1: Record customer's speech
-        text = record_text()
-        print(f"Customer said: {text}")
-        
-        # Step 2: Process the text (NLU)
-        entities, verbs = process_nlu(text)
-        print(f"Entities: {entities}, Verbs: {verbs}")
-        
-        # Step 3: Match intent based on the text
-        intent = match_intent(text)
-        print(f"Matched intent: {intent}")
-        
-        # Step 4: Generate a response based on the intent
-        response = respond(intent)
-        print(f"Agent responds: {response}")
-        
-        # Step 5: Speak the response
-        speak_response(response)
-        
-        # Step 6: End conversation if intent is goodbye
-        if intent == "goodbye":
-            break
+    user_input = request.json.get("text", "")
+    intent = match_intent(user_input)
+    response = responses.get(intent, responses["default"])
+    return jsonify({"response": response})
 
-# Start the conversation
-conversation()
+# Main entry point
+if __name__ == "__main__":
+    app.run(debug=True)
