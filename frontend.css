@@ -48,8 +48,8 @@
 }
 
 .micButton img {
-    width: 10px;
-    height: 10px;
+    width: 1px;
+    height: 1px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
 }
