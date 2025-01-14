@@ -5,7 +5,7 @@ import openai
 app = Flask(__name__)
 
 # OpenAI API configuration
-openai.api_key = "your_openai_api_key_here"  # Replace with your OpenAI API key
+openai.api_key = "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" 
 
 def get_response_from_openai(user_input):
     """Fetch response from OpenAI's API."""
