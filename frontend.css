@@ -47,18 +47,18 @@
     margin-bottom: 40px;
 }
 
-#micButton img {
+.micButton img {
     width: 10px;
     height: 10px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
 }
 
-#micButton img:hover {
+.micButton img:hover {
     transform: scale(1.2);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-#micButton img:active {
+.micButton img:active {
     transform: scale(0.9);
 }
