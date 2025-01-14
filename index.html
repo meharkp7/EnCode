@@ -14,25 +14,68 @@
             </div>
             <h1>C A L L    A G E N T</h1>
             <p>I’m a Virtual Call Assistant. How may I help you?</p>
-        </div>
-        <div class="image">
-            <img id="mic-btn" src="mic.gif" alt="Microphone animation" style="cursor: pointer;">
-        </div>
-    </section>
+       <input type="text" id="userInput" placeholder="Type your message here">
+        <button id="sendButton">Send</button>
+        <button id="micButton">
+            <img src="{{ url_for('static', filename='mic.gif') }}" alt="Mic">
+        </button>
+        <p id="agentResponse"></p>
+    </div>
     <script>
-        document.getElementById("micButton").addEventListener("click", function() {
-            fetch('/start-conversation', {
+        const sendButton = document.getElementById("sendButton");
+        const micButton = document.getElementById("micButton");
+        const userInput = document.getElementById("userInput");
+        const agentResponse = document.getElementById("agentResponse");
+
+        // Send input text to server
+        sendButton.addEventListener("click", () => {
+            sendMessage(userInput.value);
+        });
+
+        // Handle speech recognition
+        micButton.addEventListener("click", () => {
+            if ('webkitSpeechRecognition' in window) {
+                const recognition = new webkitSpeechRecognition();
+                recognition.lang = 'en-US';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+
+                recognition.onstart = () => {
+                    console.log("Voice recognition started. Speak now...");
+                };
+
+                recognition.onresult = (event) => {
+                    const speechResult = event.results[0][0].transcript;
+                    userInput.value = speechResult;
+                    sendMessage(speechResult); // Automatically send the message
+                };
+
+                recognition.onerror = (event) => {
+                    console.error("Error occurred in recognition: ", event.error);
+                    alert("Speech recognition error: " + event.error);
+                };
+
+                recognition.start();
+            } else {
+                alert("Your browser does not support speech recognition.");
+            }
+        });
+
+        // Send message to Flask server
+        function sendMessage(message) {
+            fetch('/conversation', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({ text: message })
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);  // Replace with custom response handling
+                agentResponse.innerText = data.response;
             })
             .catch(error => console.error('Error:', error));
-        });
+        }
     </script>
 </body>
 </html>
