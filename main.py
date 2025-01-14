@@ -1,15 +1,36 @@
 #TRY 1 TO COMPLETE POORA CONVERSATION    
 
+from flask import Flask, render_template, request, jsonify
 import speech_recognition as sr
 import pyttsx3
 import spacy
 import datetime
 
+app = Flask(__name__)
+
 # Initialize speech recognition, TTS, and NLU
 r = sr.Recognizer()
 nlp = spacy.load("en_core_web_sm")
 engine = pyttsx3.init()
-print("i have codedddd")
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/conversation', methods=['POST'])
+def web_conversation():
+    user_input = request.json.get("text", "")
+    if not user_input:
+        return jsonify({"response": "No input received."})
+    
+    entities, verbs = process_nlu(user_input)
+    intent = match_intent(user_input)
+    response = respond(intent)
+    
+    return jsonify({"response": response})
+
+if __name__ == "__main__":
+    app.run(debug=True)
+    
 # Define some simple intents and responses
 intents = {
     "greeting": ["hello", "hi", "hey", "good morning", "good evening", "hey there"],
