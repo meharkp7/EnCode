@@ -13,15 +13,20 @@ intents = {
     "product_inquiry": ["tell me about your product", "what do you sell", "give me more info about your products"],
     "price_inquiry": ["how much does it cost", "what is the price", "pricing details", "how much is it"],
     "thank_you": ["thank you", "thanks", "appreciate it"],
-    "goodbye": ["bye", "goodbye", "see you", "later", "talk to you soon"]
+    "goodbye": ["bye", "goodbye", "see you", "later", "talk to you soon"],
+    "cart_action": ["add to cart", "remove from cart", "add this item", "buy this"],
+    "checkout": ["proceed to checkout", "checkout", "buy now", "pay"],
+    "default": ["sorry", "what", "huh", "can you repeat that"]
 }
 
 responses = {
-    "greeting": "Hello! How can I assist you with your purchase today?",
-    "product_inquiry": "We offer a variety of products. Which category interests you?",
+     "greeting": "Hello! How can I assist you with your purchase today?",
+    "product_inquiry": "We offer a variety of products, including electronics, home appliances, and accessories. Which category interests you?",
     "price_inquiry": "Our products range from $10 to $500 depending on the item. What product are you interested in?",
     "thank_you": "You're welcome! I'm here to help.",
-    "goodbye": "Goodbye! Have a great day!",
+    "goodbye": "Goodbye! Have a great day, and thank you for your interest in our products!",
+    "cart_action": "The item has been added to your cart. Would you like to proceed with checkout?",
+    "checkout": "You're about to check out. Do you want to confirm the order?",
     "default": "I'm sorry, I didn't quite catch that. Could you please repeat?"
 }
 
