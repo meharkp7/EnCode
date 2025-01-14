@@ -27,24 +27,29 @@
         const userInput = document.getElementById("userInput");
 
         // Function to send a message to the backend
-    function sendMessage(message) {
-        fetch('/conversation', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ text: message })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Server response:", data); // Log server response
-            agentResponse.innerText = data.response;
-        })
-        .catch(error => {
-            console.error('Error:', error); // Log errors
-            agentResponse.innerText = "Sorry, something went wrong. Please try again.";
-        });
-    }
+        function sendMessage(message) {
+            if (!message.trim()) {
+                speak("Please enter a message or speak into the microphone.");
+                return;
+            }
+
+            fetch('/conversation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const reply = data.response;
+                speak(reply); // Convert reply to speech
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                speak("Sorry, something went wrong. Please try again.");
+            });
+        }
 
         // Function to handle text-to-speech
         function speak(text) {
