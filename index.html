@@ -15,20 +15,16 @@
             <h1>C A L L    A G E N T</h1>
             <p>I’m a Virtual Call Assistant. How may I help you?</p>
             <input type="text" id="userInput" placeholder="Type your message here">
-            <button id="mic-btn">
-                <img src="mic.gif" alt="Start Conversation" style="cursor: pointer;">
+            <button id="micButton">
+                <img src="mic.gif" alt="Start Conversation">
             </button>
             <p id="agentResponse"></p>
         </div>
     </section>
     <script>
-        const micButton = document.getElementById("mic-btn");  <!-- Updated ID here -->
+        const micButton = document.getElementById("micButton");
         const userInput = document.getElementById("userInput");
         const agentResponse = document.getElementById("agentResponse");
-
-        micButton.addEventListener("click", () => {
-            sendMessage(userInput.value);
-        });
 
         micButton.addEventListener("click", () => {
             if ('webkitSpeechRecognition' in window) {
@@ -43,12 +39,13 @@
 
                 recognition.onresult = (event) => {
                     const speechResult = event.results[0][0].transcript;
+                    console.log("Speech result:", speechResult); // Debug
                     userInput.value = speechResult;
                     sendMessage(speechResult); // Automatically send the message
                 };
 
                 recognition.onerror = (event) => {
-                    console.error("Error occurred in recognition: ", event.error);
+                    console.error("Error in recognition:", event.error);
                     alert("Speech recognition error: " + event.error);
                 };
 
