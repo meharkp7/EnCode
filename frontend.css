@@ -45,17 +45,16 @@
     text-align: center;
     margin-bottom: 40px;
 }
-#start-btn {
-    width: 100px;
-    transition: transform 0.2s, box-shadow 0.2s;
+#mic-btn {
+    width: 80px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-#start-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+#mic-btn:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-#start-btn:active {
-    transform: scale(0.95);
+#mic-btn:active {
+    transform: scale(0.9);
 }
