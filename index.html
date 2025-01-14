@@ -12,24 +12,26 @@
             <div class="image">
                 <img src="giphy.gif" alt="Animated illustration of a call agent">
             </div>
-            <h1>C A L L   A G E N T</h1>
+            <h1>C A L L    A G E N T</h1>
             <p>I’m a Virtual Call Assistant. How may I help you?</p>
         </div>
-        <button id="start-btn">Start Conversation</button>
         <div class="image">
             <img id="start-btn" src="mic.gif" alt="Microphone animation" style="cursor: pointer;">
         </div>
     </section>
     <script>
-        document.getElementById("start-btn").addEventListener("click", async () => {
-            try {
-                const response = await fetch('/start-conversation');
-                const data = await response.json();
-                alert(data.message);
-            } catch (error) {
-                console.error("Error starting conversation:", error);
-                alert("Failed to start the conversation. Please try again.");
-            }
+        document.getElementById("micButton").addEventListener("click", function() {
+            fetch('/start-conversation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);  // Replace with custom response handling
+            })
+            .catch(error => console.error('Error:', error));
         });
     </script>
 </body>
