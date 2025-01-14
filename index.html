@@ -17,14 +17,19 @@
         </div>
         <button id="start-btn">Start Conversation</button>
         <div class="image">
-            <img src="mic.gif" alt="Microphone animation">
+            <img id="start-btn" src="mic.gif" alt="Microphone animation" style="cursor: pointer;">
         </div>
     </section>
     <script>
         document.getElementById("start-btn").addEventListener("click", async () => {
-            const response = await fetch('/start-conversation');
-            const data = await response.json();
-            alert(data.message);
+            try {
+                const response = await fetch('/start-conversation');
+                const data = await response.json();
+                alert(data.message);
+            } catch (error) {
+                console.error("Error starting conversation:", error);
+                alert("Failed to start the conversation. Please try again.");
+            }
         });
     </script>
 </body>
