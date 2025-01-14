@@ -1,13 +1,16 @@
 from flask import Flask, render_template, request, jsonify
 import spacy
-from flask_cors import CORS
+import pyttsx3
+import speech_recognition as sr
 
 # Initialize the Flask app
-app = Flask(__name__)  # Corrected _name_ to __name__
-CORS(app)
+app = Flask(__name__)
 
 # Load the language model
 nlp = spacy.load("en_core_web_sm")
+
+# Initialize pyttsx3 for Text-to-Speech
+engine = pyttsx3.init()
 
 # Define intents and responses
 intents = {
@@ -28,11 +31,10 @@ responses = {
     "default": "I'm sorry, I didn't quite catch that. Could you please repeat?"
 }
 
-# Function to preprocess input
+# Function to match intent
 def preprocess_input(text):
     return text.strip().lower()
 
-# Function to match intent
 def match_intent(text):
     text_doc = nlp(preprocess_input(text))
     for intent, keywords in intents.items():
@@ -47,7 +49,7 @@ def match_intent(text):
 # Route for the homepage
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html')  # Correctly serving the index.html from templates folder
 
 # Route to handle conversation
 @app.route('/conversation', methods=['POST'])
@@ -55,8 +57,28 @@ def conversation():
     user_input = request.json.get("text", "")
     intent = match_intent(user_input)
     response = responses.get(intent, responses["default"])
+    text_to_speech(response)
     return jsonify({"response": response})
 
+# Function to handle text-to-speech
+def text_to_speech(text):
+    engine.say(text)
+    engine.runAndWait()
+
+# Function to convert speech to text
+def speech_to_text():
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Say something:")
+        audio = recognizer.listen(source)
+        try:
+            text = recognizer.recognize_google(audio)
+            return text
+        except sr.UnknownValueError:
+            return "Sorry, I could not understand that."
+        except sr.RequestError:
+            return "Sorry, the speech service is down."
+
 # Main entry point
-if __name__ == "__main__":  # Corrected _name_ to __name__
+if __name__ == "__main__":
     app.run(debug=True)
