@@ -13,8 +13,7 @@ intents = {
     "product_inquiry": ["tell me about your product", "what do you sell", "give me more info about your products"],
     "price_inquiry": ["how much does it cost", "what is the price", "pricing details", "how much is it"],
     "thank_you": ["thank you", "thanks", "appreciate it"],
-    "goodbye": ["bye", "goodbye", "see you", "later", "talk to you soon"],
-    "default": []
+    "goodbye": ["bye", "goodbye", "see you", "later", "talk to you soon"]
 }
 
 responses = {
@@ -28,10 +27,11 @@ responses = {
 
 # Function to match intent
 def match_intent(text):
-    text = text.lower()
+    text_doc = nlp(text.lower())
     for intent, keywords in intents.items():
-        if any(keyword in text for keyword in keywords):
-            return intent
+        for keyword in keywords:
+            if nlp(keyword).similarity(text_doc) > 0.7:  # Use semantic similarity
+                return intent
     return "default"
 
 # Route for the homepage
