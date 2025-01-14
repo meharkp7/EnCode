@@ -14,25 +14,21 @@
             </div>
             <h1>C A L L    A G E N T</h1>
             <p>I’m a Virtual Call Assistant. How may I help you?</p>
-       <input type="text" id="userInput" placeholder="Type your message here">
-        <button id="sendButton">Send</button>
+           <input type="text" id="userInput" placeholder="Type your message here">
         <button id="micButton">
-            <img src="{{ url_for('static', filename='mic.gif') }}" alt="Mic">
+            <img src="mic.gif" alt="Mic">
         </button>
         <p id="agentResponse"></p>
     </div>
     <script>
-        const sendButton = document.getElementById("sendButton");
         const micButton = document.getElementById("micButton");
         const userInput = document.getElementById("userInput");
         const agentResponse = document.getElementById("agentResponse");
 
-        // Send input text to server
-        sendButton.addEventListener("click", () => {
+        micButton.addEventListener("click", () => {
             sendMessage(userInput.value);
         });
 
-        // Handle speech recognition
         micButton.addEventListener("click", () => {
             if ('webkitSpeechRecognition' in window) {
                 const recognition = new webkitSpeechRecognition();
@@ -61,7 +57,6 @@
             }
         });
 
-        // Send message to Flask server
         function sendMessage(message) {
             fetch('/conversation', {
                 method: 'POST',
